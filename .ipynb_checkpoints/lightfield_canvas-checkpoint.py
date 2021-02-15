@@ -52,11 +52,13 @@ class DisplayLF(Canvas):
         """
         lf = np.float32(lf)
         if np.max(lf) > 1:
-            lf = lf/np.max(lf)
+            lf = lf/256
         lf = np.uint8(lf*256)
+        
         if lf.shape[-1] > 3:
             lf[lf[:,:,:,:,3] == 0] = (255,255,255,0) #convert alpha to white. 
             lf = lf[:,:,:,:,:3]
+            
         return lf
     
     def downsample_lf(self, converted_lf):
