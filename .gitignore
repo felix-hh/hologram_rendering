@@ -1,4 +1,7 @@
 *.npy
 __pycache__
 .ipynb*
-rendered_views
+rendered_views*
+2021_04*
+box_credentials.txt
+
