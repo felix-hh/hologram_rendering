@@ -168,3 +168,22 @@ def save_rendered_views(image_folder, rendered_lightfield):
             image.save(image_folder / f"{row_idx:04d}_{column_idx:04d}.png", format= "png", opt= "yes", quality= 75)
 
     print("Saved at", str(image_folder.absolute()))
+    
+def pad_to_shape(lightfield, new_shape):
+    _, _, current_height, current_width, _ = lightfield.shape
+    new_width, new_height = new_shape
+
+    def get_pad(old_dim, new_dim):
+        return (int(np.ceil((new_dim-old_dim)/2)), (new_dim-old_dim)//2)
+
+    width_pad = get_pad(current_width, new_width)
+    height_pad = get_pad(current_height, new_height)
+
+    print (width_pad, height_pad)
+
+    if not all([value >= 0 for pad_tuple in (width_pad, height_pad) for value in pad_tuple]):
+        raise Exception("The requested padded shape is smaller than the current shape, but padding can only increase dimensions")
+
+    lightfield = np.pad(lightfield, ((0,0), (0,0), height_pad, width_pad, (0,0)))
+
+    return lightfield
